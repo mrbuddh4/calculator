@@ -182,13 +182,3 @@ function operate(x, y, op) {
 function roundAccurately(num, places) {
     return parseFloat(Math.round(num + 'e' + places) + 'e-' + places);
 }
-
-/* 
-xstring together multiple operations / inputOperator() assigns result to firstOperand?
-xfix percent and sign concatenating the next operands after you press them
-xfix rounding errors
-xmake inputDecimal() imply 0
-?limit display string to 13
--keyboard support
--add backspace?
-*/
