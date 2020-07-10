@@ -34,7 +34,7 @@ html {
     padding: 5px;
     font-size: 5.5em;
     font-weight: initial;
-    text-shadow: 1px 1px black;
+    text-shadow: 1.3px 1.3px #383838;
     margin: 5px;
 }
 
@@ -48,6 +48,7 @@ button {
     color: black;
 }
 
+
 #zero {
     grid-column: span 2;
 }
@@ -56,27 +57,54 @@ button {
     background-color: #FF8F1F;    
 }
 
+.operator:focus {
+    background-color: #ffc183;
+}
+
 .equals {
     background-color: #FF8F1F;
 }
 
+.equals:active {
+    background-color: #ffc183;
+}
+
 .operand {
     background-color: #217C7E;
-    
+}
+
+.operand:active {
+    background-color: #33b9bb;
 }
 
 .decimal {
     background-color: #217C7E;
 }
 
+.decimal:active {
+    background-color: #33b9bb;
+}
+
 .clear {
     background-color: dodgerblue;
+}
+
+.clear:active {
+    background-color: rgb(123, 189, 255);
 }
 
 .sign {
     background-color: dodgerblue;
 }
 
+.sign:active {
+    background-color: rgb(123, 189, 255);
+}
+
 .percent {
     background-color: dodgerblue;
+}
+
+.percent:active {
+    background-color: rgb(123, 189, 255);
 }
