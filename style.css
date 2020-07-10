@@ -26,14 +26,26 @@ html {
 
 #display {
     grid-column: 1 / -1;
-    background-color: white;
+    background-color: #b2b9b7;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-end;
     padding: 5px;
-    font-size: 4em;
-    margin: 0.1em;
+    font-size: 5.5em;
+    font-weight: initial;
+    text-shadow: 1px 1px black;
+    margin: 5px;
+}
+
+button {
+    margin: 1px;
+    border-radius: 5%;
+    border: none;
+    font-weight: initial;
+    font-size: 2em;
+    font-family: monospace;
+    color: black;
 }
 
 #zero {
@@ -41,11 +53,11 @@ html {
 }
 
 .operator {
-    background-color: dodgerblue;    
+    background-color: #FF8F1F;    
 }
 
 .equals {
-    background-color: dodgerblue;
+    background-color: #FF8F1F;
 }
 
 .operand {
@@ -58,5 +70,13 @@ html {
 }
 
 .clear {
-    background-color: #FF8F1F;
+    background-color: dodgerblue;
+}
+
+.sign {
+    background-color: dodgerblue;
+}
+
+.percent {
+    background-color: dodgerblue;
 }

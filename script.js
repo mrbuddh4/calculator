@@ -4,12 +4,14 @@ let secondOperand = null;
 let firstOperator = null;
 let secondOperator = null;
 let result = null;
-let decimal = false;
 const buttons = document.querySelectorAll('button');
 
 function updateDisplay() {
     const display = document.getElementById('display');
     display.innerText = displayValue;
+    if(displayValue.length > 9) {
+        display.innerText = displayValue.substring(0, 9);
+    }
 }
   
 updateDisplay();
@@ -45,35 +47,21 @@ clickButton();
 
 function inputOperand(operand) {
     if(firstOperator === null) {
-        //1st click - handles first operand input
-        if(displayValue === '0') {
+        if(displayValue === '0' || displayValue === 0) {
+            //1st click - handles first operand input
             displayValue = operand;
-            firstOperand = displayValue;
+        } else if(displayValue === firstOperand) {
+            //starts new operation after inputEquals()
+            displayValue = operand;
         } else {
             displayValue += operand;
-            firstOperand = displayValue;
-            console.log(firstOperand);
         }
-    } else if(result != null) {
-        //inputOperand() after inputEquals() begins new operation
-        if(displayValue === result) {
-            result = null;
-            firstOperator = null;
-            displayValue = operand;
-            firstOperand = displayValue;
-        } else {
-            displayValue += operand;
-            firstOperand = displayValue; 
-        }                 
     } else {
         //3rd/5th click - inputs to secondOperand
-        console.log(firstOperand)
         if(displayValue === firstOperand) {
             displayValue = operand;
-            secondOperand = displayValue;
         } else {
             displayValue += operand;
-            secondOperand = displayValue;
         }
     }
 }
@@ -82,66 +70,76 @@ function inputOperator(operator) {
     if(firstOperator != null && secondOperator === null) {
         //4th click - handles input of second operator
         secondOperator = operator;
+        secondOperand = displayValue;
         result = operate(Number(firstOperand), Number(secondOperand), firstOperator);
-        displayValue = result;
+        displayValue = roundAccurately(result, 15).toString();
         firstOperand = displayValue;
         result = null;
     } else if(firstOperator != null && secondOperator != null) {
         //6th click - new secondOperator
+        secondOperand = displayValue;
         result = operate(Number(firstOperand), Number(secondOperand), secondOperator);
         secondOperator = operator;
-        displayValue = result;
+        displayValue = roundAccurately(result, 15).toString();
         firstOperand = displayValue;
         result = null;
     } else { 
         //2nd click - handles first operator input
         firstOperator = operator;
+        firstOperand = displayValue;
     }
 }
 
 function inputEquals() {
     //hitting equals doesn't display undefined before operate()
     if(firstOperator === null) {
-        displayValue = firstOperand;
-        if(firstOperand === null) {
-            displayValue = '0';
-        }
-     } else if(secondOperator != null) {
+        displayValue = displayValue;
+    } else if(secondOperator != null) {
         //handles final result
+        secondOperand = displayValue;
         result = operate(Number(firstOperand), Number(secondOperand), secondOperator);
-        displayValue = result; 
+        if(result === 'lmao') {
+            displayValue = 'lmao';
+        } else {
+            displayValue = roundAccurately(result, 15).toString();
+            firstOperand = displayValue;
+            secondOperand = null;
+            firstOperator = null;
+            secondOperator = null;
+            result = null;
+        }
     } else {
         //handles first operation
+        secondOperand = displayValue;
         result = operate(Number(firstOperand), Number(secondOperand), firstOperator);
-        displayValue = result;
+        if(result === 'lmao') {
+            displayValue = 'lmao';
+        } else {
+            displayValue = roundAccurately(result, 15).toString();
+            firstOperand = displayValue;
+            secondOperand = null;
+            firstOperator = null;
+            secondOperator = null;
+            result = null;
+        }
     }
 }
 
 function inputDecimal(dot) {
-    //after inputOperator() hitting decimal will display '0.' and then inputOperand()
-    if(!displayValue.includes(dot)) {
+    if(displayValue === firstOperand || displayValue === secondOperand) {
+        displayValue = '0';
+        displayValue += dot;
+    } else if(!displayValue.includes(dot)) {
         displayValue += dot;
     } 
 }
 
 function inputPercent(num) {
-    if(num === firstOperand) {
-        displayValue = firstOperand/100;
-        firstOperand = displayValue;
-    } if(num === secondOperand) {
-        displayValue = secondOperand/100;
-        secondOperand = displayValue;
-    }
+    displayValue = (num/100).toString();
 }
 
 function inputSign(num) {
-    if(num === firstOperand) {
-        displayValue = firstOperand * -1;
-        firstOperand = displayValue;
-    } if(num === secondOperand) {
-        displayValue = secondOperand * -1;
-        secondOperand = displayValue;
-    }
+    displayValue = (num * -1).toString();
 }
 
 function clearDisplay() {
@@ -176,11 +174,16 @@ function operate(x, y, op) {
     }
 }
 
+function roundAccurately(num, places) {
+    return parseFloat(Math.round(num + 'e' + places) + 'e-' + places);
+}
+
 /* 
 xstring together multiple operations / inputOperator() assigns result to firstOperand?
 xfix percent and sign concatenating the next operands after you press them
--limit display string to 13
--make inputDecimal() imply 0
+xfix rounding errors
+xmake inputDecimal() imply 0
+?limit display string to 13
 -keyboard support
 -add backspace?
 */
